@@ -74,6 +74,7 @@ function [font_name, font_size, font_angle] = setup_font()
     font_angle = 'normal';
     font_size = 20;
     if ispc()
+        %font_name = 'Comic Sans MS';
         font_name = 'Segoe Print';
     elseif isunix()
         font_name = 'xkcd Script';
