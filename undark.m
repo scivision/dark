@@ -94,8 +94,13 @@ function ml_graph_data()
             set(h(kk),'Color',colors(index,:));
             set(h(kk),'MarkerFaceColor',colors(index,:));
             set(h(kk),'MarkerEdgeColor',colors(index,:));
+        elseif isa(h(kk), 'matlab.graphics.primitive.Patch')
+            celight = get(h(kk),'EdgeColor');
+            cflight = get(h(kk),'FaceColor');
+            set(h(kk),'EdgeColor',[1 1 1] - celight);
+            set(h(kk),'FaceColor',[1 1 1] - cflight);
         elseif isa(h(kk), 'matlab.graphics.primitive.Text')
-            set(h(kk),'Color',[0 0 0]);
+            set(h(kk),'Color','w');
         end
     end
 
@@ -113,11 +118,10 @@ function go_graph_data()
         index = rem(cc-1,size(colors,1)) + 1;
         if isa(h, 'double')
             % octave
-            props = get(h(kk));
             if strcmpi(get(h(kk),'type'),'line')
                 set(h(kk),'Color',colors(index,:));
             elseif strcmpi(get(h(kk),'type'),'hggroup')
-                if isfield(props,'bargroup')
+                if isfield(get(h(kk)),'bargroup')
                     % bar plot
                     %set(h(kk),'FaceColor','flat');
                     set(h(kk),'FaceColor',colors(index,:));
@@ -126,13 +130,18 @@ function go_graph_data()
                     % stem plot
                     set(h(kk),'Color',colors(index,:));
                     set(h(kk),'MarkerEdgeColor',colors(index,:));
-                    if isnumeric(props.markerfacecolor)
+                    if isnumeric(get(h(kk)).markerfacecolor)
                         set(h(kk),'MarkerFaceColor',colors(index,:));
                     end
                 end
+            elseif strcmpi(get(h(kk),'type'),'patch')
+                celight = get(h(kk),'EdgeColor');
+                cflight = get(h(kk),'FaceColor');
+                set(h(kk),'EdgeColor',[1 1 1] - celight);
+                set(h(kk),'FaceColor',[1 1 1] - cflight);
             elseif strcmpi(get(h(kk),'type'),'text')
-                set(h(kk),'color',[0 0 0]);
-            end
+                set(h(kk),'Color','k');
+            end % hggroup
         end % double
     end % kk
 

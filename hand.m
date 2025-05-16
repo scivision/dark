@@ -181,16 +181,16 @@ function ml_graph_data()
     for kk = numel(h):-1:1
         cc = cc + 1;
         index = rem(cc-1,size(COLORS,1)) + 1;
-        if isa(h, 'matlab.graphics.chart.primitive.Line')
+        if isa(h(kk), 'matlab.graphics.chart.primitive.Line')
             set(h(kk),'Color',COLORS(index,:));
             set(h(kk),'MarkerFaceColor',COLORS(index,:));
             set(h(kk),'MarkerEdgeColor',COLORS(index,:));
             set(h(kk),'LineWidth',3);
-        elseif isa(h, 'matlab.graphics.chart.primitive.Bar')
+        elseif isa(h(kk), 'matlab.graphics.chart.primitive.Bar')
             set(h(kk),'FaceColor',COLORS(index,:));
             set(h(kk),'EdgeColor','black');
             set(h(kk),'EdgeAlpha',0.5);
-        elseif isa(h, 'matlab.graphics.chart.primitive.Stem')
+        elseif isa(h(kk), 'matlab.graphics.chart.primitive.Stem')
             set(h(kk),'Color',COLORS(index,:));
             set(h(kk),'MarkerFaceColor',COLORS(index,:));
             set(h(kk),'MarkerEdgeColor',COLORS(index,:));
@@ -211,12 +211,11 @@ function go_graph_data()
         index = rem(cc-1,size(COLORS,1)) + 1;
         if isa(h, 'double')
             % octave
-            props = get(h(end));
-            if strcmpi(get(h(end),'type'),'line')
+            if strcmpi(get(h(kk),'type'),'line')
                 set(h(kk),'Color',COLORS(index,:));
                 set(h(kk),'LineWidth',3);
-            elseif strcmpi(get(h(end),'type'),'hggroup')
-                if isfield(props,'bargroup')
+            elseif strcmpi(get(h(kk),'type'),'hggroup')
+                if isfield(get(h(kk)),'bargroup')
                     % bar plot
                     set(h(kk),'FaceColor',COLORS(index,:));
                     set(h(kk),'EdgeColor','black');
@@ -224,7 +223,7 @@ function go_graph_data()
                     % stem plot
                     set(h(kk),'Color',COLORS(index,:));
                     set(h(kk),'MarkerEdgeColor',COLORS(index,:));
-                    if isnumeric(props.markerfacecolor)
+                    if isnumeric(get(h(kk)).markerfacecolor)
                         set(h(kk),'MarkerFaceColor',COLORS(index,:));
                     end
                 end
