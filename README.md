@@ -1,6 +1,4 @@
-# Easily create dark-themed plots in MATLAB and GNU Octave
-
-NEW! Render plots in a hand-drawn theme with HAND.M.
+# Easily create plots with dark and hand-drawn themes in MATLAB and GNU Octave
 
 DARK converts a standard light-themed plot to a dark color scheme. DARK is easy to use, simply run the command "dark" on your current plot to render it in a dark theme. Once converted you may continue to manipulate the plot as desired including zooming, panning, and modifying properties.
 
