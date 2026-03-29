@@ -50,7 +50,7 @@ function dark(colors_in)
 %  >> dark('bp');
 %
 
-    global colors
+    global colors %#ok<*GVMIS>
 
     if nargin == 0
         colors = fetch_colortab();
@@ -100,24 +100,25 @@ function ml_graph_data()
     for kk = numel(h):-1:1
         cc = cc + 1;
         index = rem(cc-1,size(colors,1)) + 1;
-        if isa(h(kk), 'matlab.graphics.chart.primitive.Line')
+        switch class(h(kk))
+          case 'matlab.graphics.chart.primitive.Line'
             set(h(kk),'Color',colors(index,:));
             set(h(kk),'MarkerFaceColor',colors(index,:));
             set(h(kk),'MarkerEdgeColor',colors(index,:));
-        elseif isa(h(kk), 'matlab.graphics.chart.primitive.Bar')
+          case 'matlab.graphics.chart.primitive.Bar'
             set(h(kk),'FaceColor',colors(index,:));
             set(h(kk),'EdgeColor','white');
             set(h(kk),'EdgeAlpha',0.5);
-        elseif isa(h(kk), 'matlab.graphics.chart.primitive.Stem')
+          case 'matlab.graphics.chart.primitive.Stem'
             set(h(kk),'Color',colors(index,:));
             set(h(kk),'MarkerFaceColor',colors(index,:));
             set(h(kk),'MarkerEdgeColor',colors(index,:));
-        elseif isa(h(kk), 'matlab.graphics.primitive.Patch')
+          case 'matlab.graphics.primitive.Patch'
             celight = get(h(kk),'EdgeColor');
             cflight = get(h(kk),'FaceColor');
             set(h(kk),'EdgeColor',[1 1 1] - celight);
             set(h(kk),'FaceColor',[1 1 1] - cflight);
-        elseif isa(h(kk), 'matlab.graphics.primitive.Text')
+          case 'matlab.graphics.primitive.Text'
             set(h(kk),'Color','w');
         end
     end
@@ -136,9 +137,10 @@ function go_graph_data()
         index = rem(cc-1,size(colors,1)) + 1;
         if isa(h, 'double')
             % octave
-            if strcmpi(get(h(kk),'type'),'line')
+            switch lower(get(h(kk),'type'))
+              case 'line'
                 set(h(kk),'Color',colors(index,:));
-            elseif strcmpi(get(h(kk),'type'),'hggroup')
+              case 'hggroup'
                 if isfield(get(h(kk)),'bargroup')
                     % bar plot
                     set(h(kk),'FaceColor',colors(index,:));
@@ -151,12 +153,12 @@ function go_graph_data()
                         set(h(kk),'MarkerFaceColor',colors(index,:));
                     end
                 end
-            elseif strcmpi(get(h(kk),'type'),'patch')
+              case 'patch'
                 celight = get(h(kk),'EdgeColor');
                 cflight = get(h(kk),'FaceColor');
                 set(h(kk),'EdgeColor',[1 1 1] - celight);
                 set(h(kk),'FaceColor',[1 1 1] - cflight);
-            elseif strcmpi(get(h(kk),'type'),'text')
+              case 'text'
                 set(h(kk),'Color','w');
             end % hggroup
         end % double
