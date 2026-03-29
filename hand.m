@@ -1,4 +1,4 @@
-function hand(colors_in)
+function hand(colors_in, fallback)
 % Usage: hand(colors_in)
 %
 %  Hand-drawn-theme plots.
@@ -48,16 +48,20 @@ function hand(colors_in)
     global FONT_SIZE
     global FONT_ANGLE
 
-    if nargin == 0
+    if nargin < 1
         COLORS = fetch_colortab();
     else
         COLORS = fetch_colortab(lower(colors_in));
     end
 
+    if nargin < 2
+        fallback = true;
+    end
+
     % Emulate engineering graph paper background
     CANVAS_RGB = [220 243 182]/256;
 
-    [font_name, font_size, font_angle] = setup_font();
+    [font_name, font_size, font_angle] = check_font(fallback);
     FONT_NAME = font_name;
     FONT_SIZE = font_size;
     FONT_ANGLE = font_angle;
@@ -70,86 +74,28 @@ function hand(colors_in)
 
 end % main function
 
-function [font_name, font_size, font_angle] = setup_font()
-    font_angle = 'normal';
-    font_size = 20;
-    if ispc()
-        %font_name = 'Comic Sans MS';
-        font_name = 'Segoe Print';
-    elseif isunix()
-        font_name = 'xkcd Script';
-        if isoctave()
-          isfont = ~system("fc-list -q 'xkcd Script'");
-        else
-          isfont = any(ismember(listfonts(), 'xkcd Script'));
-        end
-        if ~isfont
-            try
-                isfont = install_font();
-            catch err
-                warning(err.identifier, '%s', err.message);
-                isfont = false;
-            end
-            if isfont
-                if ~isoctave()
-                    estr = sprintf('\n\n');
-                    estr = sprintf('%s    %s\n', estr,repmat('*',1,56));
-                    estr = sprintf('%s    Restart MATLAB to refresh font list.\n', estr);
-                    estr = sprintf('%s    %s\n\n', estr,repmat('*',1,56));
-                    warning('%s', estr);
-                else
-                    if strcmp(graphics_toolkit(),'gnuplot')
-                        estr = sprintf('\n\n');
-                        estr = sprintf('%s    %s\n', estr,repmat('*',1,56));
-                        estr = sprintf('%s    GNU Octave is configured to use gnuplot graphics which\n', estr);
-                        estr = sprintf('%s    is not compatible with HAND. Use the GNU Octave command\n', estr);
-                        estr = sprintf('%s    available_graphics_toolkits() and change to a different\n', estr);
-                        estr = sprintf('%s    toolkit with graphics_toolkit(new_toolkit_name).\n', estr);
-                        estr = sprintf('%s    See help graphics_toolkit for more information.\n', estr);
-                        estr = sprintf('%s    %s\n\n', estr,repmat('*',1,56));
-                        warning('%s', estr);
-                    end
-                end
-            else
-                % font did not install, fallback to a standard font
-                font_name = 'Times';  % <something standard>
-                font_angle = 'italic';
-            end % isfont
-        end % ~isfont
-    else
-        warning('Only Windows, macOS, and Linux are currently supported.');
-        font_name = 'Pacifico';
-    end % ispc()
+function [font_name, font_size, font_angle] = check_font(fallback)
+  font_angle = 'normal';
+  font_size = 20;
+  font_name = 'xkcd Script';
+  fonts_avail = listfonts();
+  isfont = any(ismember(fonts_avail, 'xkcd Script'));
+  if ~isfont
+    if ~fallback
+      error(isfont, "run install_font() function to setup 'xkcd Script' font")
+    end
 
-end % function
+    fonts = {'Segoe Print', 'Pacifico', 'Times', 'default'};
+    for i = 1:length(fonts)
+      if any(ismember(fonts_avail, fonts{i}))
+        font_name = fonts{i};
+        break
+      end
+    end
 
-function ok = install_font()
-  ok = false;
-  if ~isunix()
-    return
+    warning('font "xkcd Script" not registered; trying font %s.\nUse function install_font() to install xkcd Script', font_name)
   end
 
-  xkcd_ttf = fullfile(fileparts([mfilename('fullpath') '.m']), 'xkcd-script.ttf');
-
-  if ismac
-    disp('Install XKCD Script with Font Book, then restart Matlab')
-    ok = ~system(sprintf('open -a "Font Book" %s', xkcd_ttf));
-  else
-    fdir = '~/.local/share/fonts/';
-    if ~exist(fdir, 'dir')
-      mkdir(fdir);
-    end
-    fname = [fdir, 'xkcd-script.ttf'];
-
-    if ~exist(fname, 'file')
-      copyfile(xkcd_ttf, fname);
-    end
-
-    if exist(fname, 'file')
-      system('fc-cache -f -y -v ~/.local/share/fonts/ 2> /dev/null');
-      ok = ~system("fc-list -q 'xkcd Script'");
-    end
-  end
 end % function
 
 function draw_canvas()

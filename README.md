@@ -15,17 +15,18 @@ In short UNDARK undoes DARK.
 HAND renders a plot in a theme that emulates a hand-drawn plot in an engineering notebook.
 It works the same way as DARK, simply run the command "hand" on your current plot to render it in a hand-drawn thme.
 Once converted you may continue to modify properties, zoom, and pan as desired.
+If the "xkcd Script" font is not yet installed, hand() will prompt to run `install_font()` to install the font.
+This only needs to be done once per system.
 
 HAND has been tested with MATLAB R2023b and R2026a and
-GNU Octave versions 5.2.0, 6.4.0, 8.3.0, and 9.1.0 running on Windows 10, macOS, Linux RHEL 8 and Ubuntu 22.04.
-For running on Linux, HAND bundles the excellent "xkcd Script" font from [xkcd-font](https://github.com/ipython/xkcd-font).
-When running on Windows, HAND uses the "Segoe Print" font included with all modern Windows distributions.
+GNU Octave versions 7.1.0, 8.3.0, 9.1.0, and 11.1.0 running on Windows 10, macOS, Linux RHEL 8 and Ubuntu 22.04.
+HAND bundles the excellent "xkcd Script" font from [xkcd-font](https://github.com/ipython/xkcd-font).
 Similar to DARK, HAND is coded using funtions native to MATLAB and GNU Octave without any dependencies on toolboxes or packages, making it highly portable.
 
 To run self-tests on Matlab:
 
 ```matlab
-runtests
+runtests test/
 ```
 
 ##  Files
@@ -33,6 +34,7 @@ runtests
 * hand.m - Convert plot to a hand-drawn theme
 * dark.m - Convert plot to a dark color theme
 * undark.m - Convert dark theme plot back to the standard light theme
+* install_font.m - Install the "xkcd Script" font for use with hand.m. This only needs to be run once per system.
 * xkcd-script.ttf - xkcd Script font from [xkcd-font](https://github.com/ipython/xkcd-font)
 
 Test files:
