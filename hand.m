@@ -78,7 +78,11 @@ function [font_name, font_size, font_angle] = setup_font()
         font_name = 'Segoe Print';
     elseif isunix()
         font_name = 'xkcd Script';
-        isfont = ~system("fc-list -q 'xkcd Script'");
+        if isoctave()
+          isfont = ~system("fc-list -q 'xkcd Script'");
+        else
+          isfont = any(ismember(listfonts(), 'xkcd Script'));
+        end
         if ~isfont
             try
                 isfont = install_font();
@@ -120,30 +124,32 @@ function [font_name, font_size, font_angle] = setup_font()
 end % function
 
 function ok = install_font()
-    % Linux only
-    if ~isunix()
-        ok = false;
-        return
+  ok = false;
+  if ~isunix()
+    return
+  end
+    
+  xkcd_ttf = fullfile(fileparts([mfilename('fullpath') '.m']), 'xkcd-script.ttf');
+
+  if ismac
+    disp('Install XKCD Script with Font Book, then restart Matlab')
+    ok = ~system(sprintf('open -a "Font Book" %s', xkcd_ttf));
+  else
+    fdir = '~/.local/share/fonts/';
+    if ~exist(fdir, 'dir')
+      mkdir(fdir);
     end
-    if ~exist('~/.local', 'dir')
-        mkdir('~','.local')
+    fname = [fdir, 'xkcd-script.ttf'];
+
+    if ~exist(fname, 'file')
+      copyfile(xkcd_ttf, fname);
     end
-    if ~exist('~/.local/share', 'dir')
-        mkdir('~/.local','share')
+
+    if exist(fname, 'file')
+      system('fc-cache -f -y -v ~/.local/share/fonts/ 2> /dev/null');
+      ok = ~system("fc-list -q 'xkcd Script'");
     end
-    if ~exist('~/.local/share/fonts', 'dir')
-        mkdir('~/.local/share','fonts')
-    end
-    if ~exist('~/.local/share/fonts/xkcd-script.ttf', 'file')
-        P = mfilename('fullpath');
-        fp = fileparts([P '.m']);
-        ff = fullfile(fp,'xkcd-script.ttf'); 
-        ok = copyfile(ff, '~/.local/share/fonts/');
-        if ok
-            system('fc-cache -f -y -v ~/.local/share/fonts/ 2> /dev/null');
-            ok = ~system("fc-list -q 'xkcd Script'");
-        end
-    end
+  end
 end % function
 
 function draw_canvas()
