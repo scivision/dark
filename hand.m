@@ -42,7 +42,7 @@ function hand(colors_in)
 %  >> hand;
 %
 
-    global COLORS
+    global COLORS %#ok<*GVMIS>
     global CANVAS_RGB
     global FONT_NAME
     global FONT_SIZE
@@ -83,7 +83,7 @@ function [font_name, font_size, font_angle] = setup_font()
             try
                 isfont = install_font();
             catch err
-                warning(err.identifier, err.message);
+                warning(err.identifier, '%s', err.message);
                 isfont = false;
             end
             if isfont
@@ -92,7 +92,7 @@ function [font_name, font_size, font_angle] = setup_font()
                     estr = sprintf('%s    %s\n', estr,repmat('*',1,56));
                     estr = sprintf('%s    Restart MATLAB to refresh font list.\n', estr);
                     estr = sprintf('%s    %s\n\n', estr,repmat('*',1,56));
-                    warning(estr);
+                    warning('%s', estr);
                 else 
                     if strcmp(graphics_toolkit(),'gnuplot')
                         estr = sprintf('\n\n');
@@ -103,7 +103,7 @@ function [font_name, font_size, font_angle] = setup_font()
                         estr = sprintf('%s    toolkit with graphics_toolkit(new_toolkit_name).\n', estr);
                         estr = sprintf('%s    See help graphics_toolkit for more information.\n', estr);
                         estr = sprintf('%s    %s\n\n', estr,repmat('*',1,56));
-                        warning(estr);
+                        warning('%s', estr);
                     end 
                 end 
             else
@@ -125,21 +125,20 @@ function ok = install_font()
         ok = false;
         return
     end
-    if ~exist('~/.local')
+    if ~exist('~/.local', 'dir')
         mkdir('~','.local')
     end
-    if ~exist('~/.local/share')
+    if ~exist('~/.local/share', 'dir')
         mkdir('~/.local','share')
     end
-    if ~exist('~/.local/share/fonts')
+    if ~exist('~/.local/share/fonts', 'dir')
         mkdir('~/.local/share','fonts')
     end
-    if ~exist('~/.local/share/fonts/xkcd-script.ttf')
+    if ~exist('~/.local/share/fonts/xkcd-script.ttf', 'file')
         P = mfilename('fullpath');
         fp = fileparts([P '.m']);
         ff = fullfile(fp,'xkcd-script.ttf'); 
-        cmd1 = sprintf('cp %s ~/.local/share/fonts/',ff); 
-        ok = ~system(cmd1);
+        ok = copyfile(ff, '~/.local/share/fonts/');
         if ok
             system('fc-cache -f -y -v ~/.local/share/fonts/ 2> /dev/null');
             ok = ~system("fc-list -q 'xkcd Script'");
