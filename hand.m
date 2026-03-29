@@ -374,7 +374,7 @@ function colortab = fetch_colortab(colors_in)
     colorbase = colortab_base();
     for kk = 1:numel(c)
         if isfield(colorbase,c(kk))
-            colortab = [colortab; colorbase.(c(kk))];
+            colortab = [colortab; colorbase.(c(kk))]; %#ok<*AGROW>
         elseif c(kk) == 'k'
             colortab = [colortab; [0 0 0]]; % reluctantly support black
         else

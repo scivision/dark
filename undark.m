@@ -31,7 +31,7 @@ function undark()
 %  >> undark('bp');
 %
 
-    global colors
+    global colors %#ok<*GVMIS>
 
     colors = fetch_colortab();
 

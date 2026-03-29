@@ -1,0 +1,56 @@
+name: matlab
+
+on:
+  push:
+    paths:
+    - "**.m"
+    - ".github/workflows/ci.yml"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+
+jobs:
+
+  tests:
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ubuntu-latest]
+        matlab: [R2023b, R2025b]
+        include:
+        - os: macos-latest
+          matlab: R2025b
+        - os: windows-latest
+          matlab: R2025b
+
+    runs-on: ${{ matrix.os }}
+
+    timeout-minutes: 15
+
+    steps:
+
+    - name: Install MATLAB
+      timeout-minutes: 10
+      uses: matlab-actions/setup-matlab@v2
+      with:
+        release: ${{ matrix.matlab }}
+        cache: true
+
+    - uses: actions/checkout@v6
+
+    - name: Check Matlab code
+      uses: matlab-actions/run-build@v2
+      with:
+        tasks: check
+
+    - name: Install font
+      uses: matlab-actions/run-build@v2
+      with:
+        tasks: install
+
+    - name: Run Matlab tests
+      uses: matlab-actions/run-build@v2
+      with:
+        tasks: test

@@ -15,7 +15,7 @@ hand
 pause(2)
 
 close all
-plot([real(exp(i*2*pi/1024*(0:1024)));imag(exp(i*2*pi/1024*(0:1024)))].');
+plot([real(exp(1j*2*pi/1024*(0:1024)));imag(exp(1j*2*pi/1024*(0:1024)))].');
 grid on
 xlabel('Time (s)')
 ylabel('Amplitude (V)')

@@ -320,7 +320,7 @@ function colortab = fetch_colortab(colors_in)
         fc = fieldnames(colortab_base());
         c = '';
         for kk = 1:numel(fc)
-            c = [c fc{kk}];
+            c = [c fc{kk}]; %#ok<*AGROW>
         end
     else
         c = colors_in;

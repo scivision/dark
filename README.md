@@ -26,7 +26,14 @@ Similar to DARK, HAND is coded using funtions native to MATLAB and GNU Octave wi
 To run self-tests on Matlab:
 
 ```matlab
-runtests test/
+buildtool check
+buildtool test
+```
+
+To install fonts with Matlab buildtool
+
+```matlab
+buildtool install
 ```
 
 ##  Files
@@ -39,6 +46,7 @@ runtests test/
 
 Test files:
 
+* buildfile.m - Matlab build system
 * test_hand.m - Script test for hand.m (Octave or Matlab)
 * TestHand.m - Matlab unit tests for hand.m
 * test_dark.m - Script test for dark.m with several plot types (Octave or Matlab)

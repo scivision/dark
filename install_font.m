@@ -9,7 +9,7 @@ end
 xkcd_ttf = fullfile(fileparts([mfilename('fullpath') '.m']), 'xkcd-script.ttf');
 
 if ispc()
-  cmd = sprintf('(New-Object -ComObject Shell.Application).Namespace(0x14).CopyHere(%s)', xkcd_ttf);
+  cmd = sprintf('pwsh -c "(New-Object -ComObject Shell.Application).Namespace(0x14).CopyHere(''%s'')"', xkcd_ttf);
   ok = ~system(cmd);
 elseif ismac()
   disp('Install XKCD Script with Font Book')
