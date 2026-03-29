@@ -2,32 +2,47 @@
 
 DARK converts a standard light-themed plot to a dark color scheme. DARK is easy to use, simply run the command "dark" on your current plot to render it in a dark theme. Once converted you may continue to manipulate the plot as desired including zooming, panning, and modifying properties.
 
-DARK uses only native functions common to MATLAB and GNU Octave without any dependencies on toolboxes or packages. 
-Because of this it will likely run on most any version. 
-It's been tested with MATLAB versions R2019b, R2020b, R2022b, R2023b, and R2026a 
-as well as GNU Octave versions 3.8.2, 4.4.0, 5.2.0, 6.4.0, 8.3.0, 9.1.0, and 11.1.0. 
-DARK has been tested on Windows 10 and Linux distros running Centos7, RHEL 8, and Ubuntu 22.04.
+DARK uses only native functions common to MATLAB and GNU Octave without any dependencies on toolboxes or packages.
+Because of this it will likely run on most any version.
+It's been tested with MATLAB versions R2019b, R2020b, R2022b, R2023b, and R2026a
+as well as GNU Octave versions 3.8.2, 4.4.0, 5.2.0, 6.4.0, 8.3.0, 9.1.0, and 11.1.0.
+DARK has been tested on Windows 10, macOS,and Linux distros running Centos7, RHEL 8, and Ubuntu 22.04.
 
-UNDARK restores a dark-themed plot back to its standard light theme. 
-Running the command "undark" will restore the current plot to its standard light theme. 
+UNDARK restores a dark-themed plot back to its standard light theme.
+Running the command "undark" will restore the current plot to its standard light theme.
 In short UNDARK undoes DARK.
 
-HAND renders a plot in a theme that emulates a hand-drawn plot in an engineering notebook. 
-It works the same way as DARK, simply run the command "hand" on your current plot to render it in a hand-drawn thme. 
+HAND renders a plot in a theme that emulates a hand-drawn plot in an engineering notebook.
+It works the same way as DARK, simply run the command "hand" on your current plot to render it in a hand-drawn thme.
 Once converted you may continue to modify properties, zoom, and pan as desired.
 
-HAND has been tested with MATLAB R2023b and GNU Octave versions 5.2.0, 6.4.0, 8.3.0, and 9.1.0 running on Windows 10 as well as Linux RHEL 8 and Ubuntu 22.04. 
-For running on Linux, HAND bundles the excellent "xkcd Script" font from [xkcd-font](https://github.com/ipython/xkcd-font). 
-When running on Windows, HAND uses the "Segoe Print" font included with all modern Windows distributions. Similar to DARK, HAND is coded using funtions native to MATLAB and GNU Octave without any dependencies on toolboxes or packages, making it highly portable.
+HAND has been tested with MATLAB R2023b and R2026a and
+GNU Octave versions 5.2.0, 6.4.0, 8.3.0, and 9.1.0 running on Windows 10, macOS, Linux RHEL 8 and Ubuntu 22.04.
+For running on Linux, HAND bundles the excellent "xkcd Script" font from [xkcd-font](https://github.com/ipython/xkcd-font).
+When running on Windows, HAND uses the "Segoe Print" font included with all modern Windows distributions.
+Similar to DARK, HAND is coded using funtions native to MATLAB and GNU Octave without any dependencies on toolboxes or packages, making it highly portable.
 
-# Files
-* hand.m - NEW - Convert plot to a hand-drawn theme
-* test_hand.m - NEW - Test for hand.m
+To run self-tests on Matlab:
+
+```matlab
+runtests
+```
+
+##  Files
+
+* hand.m - Convert plot to a hand-drawn theme
 * dark.m - Convert plot to a dark color theme
 * undark.m - Convert dark theme plot back to the standard light theme
-* test_dark.m - Test dark.m with several plot types
-* test_undark.m - Test undark.m with several plot types
-* xkcd-script.ttf - NEW - xkcd Script font from [xkcd-font](https://github.com/ipython/xkcd-font)
+* xkcd-script.ttf - xkcd Script font from [xkcd-font](https://github.com/ipython/xkcd-font)
+
+Test files:
+
+* test_hand.m - Script test for hand.m (Octave or Matlab)
+* TestHand.m - Matlab unit tests for hand.m
+* test_dark.m - Script test for dark.m with several plot types (Octave or Matlab)
+* TestDark.m - Matlab unit tests for dark.m
+* test_undark.m - Script test for undark.m with several plot types (Octave or Matlab)
+* TestUndark.m - Matlab unit tests for undark.m
 
 ![Sample plot 1](./images/example1.PNG "Sample plot 1")
 
@@ -71,6 +86,6 @@ hand
 ~~~~
 
 # Citation
-1. **[xkcd-font](https://github.com/ipython/xkcd-font)**  
+1. **[xkcd-font](https://github.com/ipython/xkcd-font)**
 
 > Written with [StackEdit](https://stackedit.io/).
